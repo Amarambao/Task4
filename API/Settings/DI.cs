@@ -130,12 +130,22 @@ namespace Identity.Settings
             app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
+            
+            var corsSection = app.Configuration.GetSection("CORS");
+            var corsChildren = corsSection.GetChildren().ToList();
 
-            app.UseCors(builder => builder
-                .WithOrigins("http://localhost:5173")
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials());
+            app.UseCors(options =>
+            {
+                foreach (var child in corsChildren)
+                {
+                    var url = child["URL"];
+
+                    options.WithOrigins(url!)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                }
+            });
 
             app.UseAuthentication();
 
