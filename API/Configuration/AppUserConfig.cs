@@ -1,12 +1,12 @@
-﻿using Identity.Models;
+﻿using API.Models.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Identity.Configuration
 {
-    internal class AppUserConfig : IEntityTypeConfiguration<AppUser>
+    internal class AppUserConfig : IEntityTypeConfiguration<AppUserEntity>
     {
-        public void Configure(EntityTypeBuilder<AppUser> builder)
+        public void Configure(EntityTypeBuilder<AppUserEntity> builder)
         {
             builder.HasIndex(z => z.LastLoginTime)
                 .IsDescending();

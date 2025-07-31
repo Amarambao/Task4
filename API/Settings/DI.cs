@@ -1,8 +1,8 @@
 ﻿using API.Interfaces;
+using API.Models.Entity;
 using API.Services;
 using Identity.Contexts;
 using Identity.Interfaces;
-using Identity.Models;
 using Identity.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.CookiePolicy;
@@ -19,9 +19,10 @@ namespace Identity.Settings
         public static async Task Add(WebApplicationBuilder builder)
         {
             AddContext(builder.Services, builder.Configuration);
+            IdentityPaswordSettings(builder.Services);
             AddService(builder.Services);
             AddSettings(builder.Services, builder.Configuration);
-            await AppBuildAsync(builder);
+            AppBuild(builder);
         }
 
         private static void AddContext(IServiceCollection services, IConfiguration configuration)
@@ -29,14 +30,28 @@ namespace Identity.Settings
             services.AddDbContext<IdentitySQLContext>(
                     options => options.UseNpgsql(configuration.GetConnectionString("IdentityDatabase")));
 
-            services.AddIdentity<AppUser, IdentityRole<Guid>>()
+            services.AddIdentity<AppUserEntity, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<IdentitySQLContext>()
                 .AddApiEndpoints();
+        }
+
+        private static void IdentityPaswordSettings(IServiceCollection services)
+        {
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 1;
+                options.Password.RequiredUniqueChars = 1;
+            });
         }
 
         private static void AddService(IServiceCollection services)
         {
             services.AddScoped<IIdentityUserService, IdentityUserService>();
+            services.AddScoped<IUserOperationsService, UserOperationsService>();
             services.AddScoped<IJwtService, JwtService>();
         }
 
@@ -101,7 +116,7 @@ namespace Identity.Settings
             });
         }
 
-        private static async Task AppBuildAsync(WebApplicationBuilder builder)
+        private static void AppBuild(WebApplicationBuilder builder)
         {
             var app = builder.Build();
 

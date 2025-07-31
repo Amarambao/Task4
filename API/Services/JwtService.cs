@@ -1,5 +1,5 @@
 ﻿using API.Interfaces;
-using Identity.Models;
+using API.Models.Entity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -16,7 +16,7 @@ namespace API.Services
             _configuration = configuration;
         }
 
-        public async Task<string> GenerateJwtTokenAsync(AppUser user)
+        public async Task<string> GenerateJwtTokenAsync(AppUserEntity user)
         {
             if (user.IsBlocked)
                 throw new InvalidOperationException("This user is blocked");
@@ -37,7 +37,7 @@ namespace API.Services
             return handler.WriteToken(handler.CreateToken(tokenDescriptor));
         }
 
-        private async Task<ClaimsIdentity> GenerateClaimsIdentityAsync(AppUser user)
+        private async Task<ClaimsIdentity> GenerateClaimsIdentityAsync(AppUserEntity user)
         {
             var claims = new List<Claim>
             {

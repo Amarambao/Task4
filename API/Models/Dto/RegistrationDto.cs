@@ -1,6 +1,6 @@
-﻿namespace Identity.Models
+﻿namespace API.Models.Dto
 {
-    public class AppUserPostDto
+    public class RegistrationDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

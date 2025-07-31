@@ -1,9 +1,9 @@
-﻿using Identity.Models;
+﻿using API.Models.Entity;
 
 namespace API.Interfaces
 {
     public interface IJwtService
     {
-        public Task<string> GenerateJwtTokenAsync(AppUser user);
+        public Task<string> GenerateJwtTokenAsync(AppUserEntity user);
     }
 }

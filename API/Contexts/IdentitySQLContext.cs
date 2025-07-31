@@ -1,12 +1,12 @@
-﻿using Identity.Configuration;
-using Identity.Models;
+﻿using API.Models.Entity;
+using Identity.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Contexts
 {
-    internal class IdentitySQLContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
+    internal class IdentitySQLContext : IdentityDbContext<AppUserEntity, IdentityRole<Guid>, Guid>
     {
         public IdentitySQLContext() { }
 
