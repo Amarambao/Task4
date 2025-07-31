@@ -41,7 +41,12 @@ namespace Identity.Services
             if (!passwordCheck.Succeeded)
                 throw new Exception("Wrong credentials");
 
-            return await _jwtService.GenerateJwtTokenAsync(user!);
+            var token = await _jwtService.GenerateJwtTokenAsync(user!);
+
+            user.LastLoginTime = DateTime.UtcNow;
+            await _userManager.UpdateAsync(user);
+
+            return token;
         }
 
         public async Task<string> RegistrateUserAsync(RegistrationDto dto)

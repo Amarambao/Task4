@@ -18,9 +18,6 @@ namespace API.Services
 
         public async Task<string> GenerateJwtTokenAsync(AppUserEntity user)
         {
-            if (user.IsBlocked)
-                throw new InvalidOperationException("This user is blocked");
-
             var handler = new JwtSecurityTokenHandler();
 
             var tokenDescriptor = new SecurityTokenDescriptor
